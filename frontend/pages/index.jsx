@@ -10,55 +10,133 @@ export default function Home() {
   const [portfolio, setPortfolio] = useState([]);
   const [filtered, setFiltered] = useState([]);
   const [analysis, setAnalysis] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [newsLoading, setNewsLoading] = useState(true);
 
   useEffect(() => {
     fetch('/api/news')
       .then(res => res.json())
       .then(data => {
-        console.log("Fetched news:", data);
-        setAllNews(data.headlines);
+        setAllNews(data.headlines || []);
+        setNewsLoading(false);
+      })
+      .catch(err => {
+        console.error('Failed to fetch news:', err);
+        setNewsLoading(false);
       });
   }, []);
 
   const handlePortfolioSubmit = async (symbols) => {
     setPortfolio(symbols);
+    setLoading(true);
+    setAnalysis([]);
+
     const filteredNews = allNews.filter(n =>
-  symbols.some(sym => new RegExp(`\\b${sym}\\b`, 'i').test(n.title))
-);
+      symbols.some(sym => new RegExp(`\\b${sym}\\b`, 'i').test(n.title))
+    );
 
     setFiltered(filteredNews);
 
-    console.log("Filtered news:", filteredNews);
     if (filteredNews.length === 0) {
-  alert("No matching news found for the entered symbols.");
-  return;
-}
-    const res = await fetch('/api/news', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ filtered: filteredNews })
-    });
-    const { analysis } = await res.json();
-    setAnalysis(analysis);
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const res = await fetch('/api/news', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ filtered: filteredNews })
+      });
+      const data = await res.json();
+      setAnalysis(data.analysis || []);
+    } catch (err) {
+      console.error('Analysis failed:', err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-  <div>
-    {/* Background section just for input */}
-    <section className={styles.background}>
-      <div className={styles.centerBox}>
-        <PortfolioForm onSubmit={handlePortfolioSubmit} />
+    <div className={styles.pageWrapper}>
+      {/* Header */}
+      <header className={styles.header}>
+        <div className={styles.logo}>
+          <span className={styles.logoIcon}>📈</span>
+          <span className={styles.logoText}>StockPulse</span>
+        </div>
+        <span className={styles.tagline}>AI-Powered Stock Sentiment Analyzer</span>
+      </header>
+
+      {/* Hero Section */}
+      <section className={styles.hero}>
+        <h1 className={styles.heroTitle}>Analyze Market News with AI</h1>
+        <p className={styles.heroSubtitle}>
+          Enter your stock symbols to get AI-powered sentiment analysis on relevant news
+        </p>
+        <div className={styles.inputWrapper}>
+          <PortfolioForm onSubmit={handlePortfolioSubmit} loading={loading} />
+        </div>
+        <p className={styles.symbolHint}>
+          Try: <code>RELIANCE</code>, <code>TCS</code>, <code>INFY</code>, <code>HDFC</code>
+        </p>
+      </section>
+
+      {/* Loading State */}
+      {loading && (
+        <div className={styles.loadingOverlay}>
+          <div className="spinner"></div>
+          <p className={styles.loadingText}>Analyzing news with AI...</p>
+        </div>
+      )}
+
+      {/* Analysis Results */}
+      {!loading && analysis.length > 0 && (
+        <section className={styles.analysisSection}>
+          <h2 className={styles.analysisTitle}>
+            <span>🤖</span> AI Analysis Results
+          </h2>
+          {analysis.map((a, i) => (
+            <AnalysisCard key={i} data={a} />
+          ))}
+        </section>
+      )}
+
+      {/* No Results Message */}
+      {!loading && filtered.length === 0 && portfolio.length > 0 && (
+        <div className={styles.emptyState}>
+          <div className={styles.emptyIcon}>🔍</div>
+          <p>No matching news found for your portfolio symbols.</p>
+        </div>
+      )}
+
+      {/* Content Grid: News Sections */}
+      <div className={styles.contentGrid}>
+        {/* Filtered News */}
+        {filtered.length > 0 && (
+          <div className={styles.newsSection}>
+            <h3 className={styles.sectionTitle}>
+              <span>📌</span> Portfolio News
+            </h3>
+            <FilteredNews headlines={filtered} />
+          </div>
+        )}
+
+        {/* General News */}
+        <div className={styles.newsSection} style={filtered.length === 0 ? { gridColumn: '1 / -1' } : {}}>
+          <h3 className={styles.sectionTitle}>
+            <span>📰</span> Market News
+          </h3>
+          {newsLoading ? (
+            <div className={styles.loadingOverlay}>
+              <div className="spinner"></div>
+              <p className={styles.loadingText}>Loading news...</p>
+            </div>
+          ) : (
+            <NewsList headlines={allNews} />
+          )}
+        </div>
       </div>
-    </section>
-
-    {/* Scrollable content below */}
-    <section className={styles.generalNews}>
-      <NewsList headlines={allNews} />
-    </section>
-
-    {filtered.length > 0 && <FilteredNews headlines={filtered} />}
-    {analysis.length > 0 && analysis.map((a, i) => <AnalysisCard key={i} data={a} />)}
-  </div>
-);
-
+    </div>
+  );
 }

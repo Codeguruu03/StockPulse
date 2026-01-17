@@ -1,12 +1,13 @@
 import styles from '../styles/PortfolioForm.module.css';
 import { useState } from 'react';
 
-export default function PortfolioForm({ onSubmit }) {
+export default function PortfolioForm({ onSubmit, loading }) {
   const [symbols, setSymbols] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const symbolArray = symbols.toUpperCase().split(',').map(s => s.trim());
+    if (!symbols.trim()) return;
+    const symbolArray = symbols.toUpperCase().split(',').map(s => s.trim()).filter(Boolean);
     onSubmit(symbolArray);
   };
 
@@ -16,9 +17,19 @@ export default function PortfolioForm({ onSubmit }) {
         className={styles.input}
         value={symbols}
         onChange={(e) => setSymbols(e.target.value)}
-        placeholder="Enter stock symbols..."
+        placeholder="Enter stock symbols (e.g., RELIANCE, TCS, INFY)"
+        disabled={loading}
       />
-      <button className={styles.button} type="submit">Analyze</button>
+      <button className={styles.button} type="submit" disabled={loading || !symbols.trim()}>
+        {loading ? (
+          <>
+            <span className={styles.spinner}></span>
+            Analyzing...
+          </>
+        ) : (
+          '🔍 Analyze'
+        )}
+      </button>
     </form>
   );
 }
