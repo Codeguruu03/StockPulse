@@ -1,0 +1,32 @@
+/* styles/Home.module.css */
+.background {
+  background-image: url('https://i.pinimg.com/originals/1f/80/68/1f8068b60e33bfce654fcbf27097d12c.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.centerBox {
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  width: 90%;
+  max-width: 600px;
+}
+
+.generalNews {
+  background-color: #ffffff;
+  padding: 2rem;
+  margin: 2rem auto;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  width: 90%;
+  max-width: 800px;
+}

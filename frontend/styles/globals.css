@@ -1,0 +1,28 @@
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.container {
+  max-width: 800px;
+  margin: auto;
+}
+
+input {
+  padding: 0.5em;
+  margin: 0.5em;
+  width: 60%;
+}
+
+button {
+  padding: 0.5em 1em;
+}
+
+.card {
+  background: #fff;
+  border-left: 5px solid #0070f3;
+  margin: 1em 0;
+  padding: 1em;
+}
