@@ -166,3 +166,31 @@
   font-size: 2.5rem;
   margin-bottom: 0.75rem;
 }
+
+/* ===== Error State ===== */
+.errorState {
+  text-align: center;
+  padding: 2rem;
+  margin: 2rem auto;
+  max-width: 500px;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 16px;
+}
+
+.errorIcon {
+  font-size: 2.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.errorText {
+  color: #ef4444;
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.errorHint {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+}

@@ -12,6 +12,7 @@ export default function Home() {
   const [analysis, setAnalysis] = useState([]);
   const [loading, setLoading] = useState(false);
   const [newsLoading, setNewsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     fetch('/api/news')
@@ -30,6 +31,7 @@ export default function Home() {
     setPortfolio(symbols);
     setLoading(true);
     setAnalysis([]);
+    setError(null);
 
     const filteredNews = allNews.filter(n =>
       symbols.some(sym => new RegExp(`\\b${sym}\\b`, 'i').test(n.title))
@@ -48,10 +50,16 @@ export default function Home() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ filtered: filteredNews })
       });
+
+      if (!res.ok) {
+        throw new Error('AI analysis service temporarily unavailable');
+      }
+
       const data = await res.json();
       setAnalysis(data.analysis || []);
     } catch (err) {
       console.error('Analysis failed:', err);
+      setError('AI analysis is temporarily unavailable. Please check your API configuration.');
     } finally {
       setLoading(false);
     }
@@ -90,8 +98,17 @@ export default function Home() {
         </div>
       )}
 
+      {/* Error State */}
+      {!loading && error && (
+        <div className={styles.errorState}>
+          <div className={styles.errorIcon}>⚠️</div>
+          <p className={styles.errorText}>{error}</p>
+          <p className={styles.errorHint}>Please ensure your DeepSeek API key is valid in backend/.env</p>
+        </div>
+      )}
+
       {/* Analysis Results */}
-      {!loading && analysis.length > 0 && (
+      {!loading && !error && analysis.length > 0 && (
         <section className={styles.analysisSection}>
           <h2 className={styles.analysisTitle}>
             <span>🤖</span> AI Analysis Results
