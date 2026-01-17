@@ -16,8 +16,19 @@ StockPulse is a full-stack web application that fetches real-time stock market n
 - 🔍 **Real-time News Fetching** - Pulls latest Indian stock market news via MarketAux API
 - 🤖 **AI Sentiment Analysis** - Uses DeepSeek LLM to rate news as Positive/Neutral/Negative
 - 📊 **Portfolio Filtering** - Filter news relevant to your specific stock holdings
-- 📈 **Confidence Scoring** - Each analysis includes a 0-100% confidence rating
-- 🎨 **Color-coded Results** - Visual sentiment indicators (green/gray/red)
+- 📈 **Confidence Scoring** - Each analysis includes a 0-100% confidence rating with visual bars
+- 🎨 **Modern Dark UI** - Sleek dark theme with glassmorphism and gradient effects
+- ⚡ **Loading States** - Visual feedback during API calls
+- 📱 **Responsive Design** - Works on desktop and mobile devices
+
+---
+
+## 🖼️ Screenshots
+
+### Dashboard
+![StockPulse Dashboard](https://i.imgur.com/placeholder.png)
+
+*Modern dark theme with real-time market news and AI analysis*
 
 ---
 
@@ -43,7 +54,7 @@ StockPulse/
     │   ├── NewsList        # All news headlines
     │   ├── FilteredNews    # Portfolio-relevant news
     │   └── AnalysisCard    # AI sentiment cards
-    └── styles/             # CSS Modules
+    └── styles/             # CSS Modules (Dark Theme)
 ```
 
 ---
@@ -113,7 +124,7 @@ StockPulse/
 
 1. **Enter Stock Symbols** - Type comma-separated stock symbols (e.g., `RELIANCE, TCS, INFY`)
 2. **Click Analyze** - The app filters news matching your portfolio
-3. **View AI Analysis** - Each headline gets a sentiment rating with reasoning
+3. **View AI Analysis** - Each headline gets a sentiment rating with reasoning and confidence bar
 
 ### Example Output
 
@@ -125,6 +136,20 @@ StockPulse/
   "confidence": 92
 }
 ```
+
+---
+
+## 🎨 UI Features
+
+| Feature | Description |
+|---------|-------------|
+| **Dark Theme** | Sleek dark gradient background with purple accents |
+| **Glassmorphism** | Frosted glass effect on cards |
+| **Visual Confidence Bars** | Progress bars showing AI confidence levels |
+| **Sentiment Icons** | 📈 Positive, 📉 Negative, ➖ Neutral |
+| **Hover Animations** | Smooth card lift effects |
+| **Loading Spinners** | Visual feedback during API calls |
+| **Error Handling** | User-friendly error messages |
 
 ---
 
@@ -161,7 +186,7 @@ sequenceDiagram
 | **Backend** | Express.js 5, Node.js |
 | **AI/ML** | DeepSeek API (OpenAI-compatible) |
 | **News API** | MarketAux (Indian stocks) |
-| **Styling** | CSS Modules |
+| **Styling** | CSS Modules with Dark Theme |
 
 ---
 
@@ -209,7 +234,7 @@ sequenceDiagram
 - [ ] Real-time stock price integration
 - [ ] Multiple market support (US, EU, Asia)
 - [ ] Email/SMS alerts for significant news
-- [ ] Dark mode UI
+- [ ] Push notifications
 
 ---
 
