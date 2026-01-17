@@ -1,44 +1,120 @@
+/* ===== Analysis Card ===== */
 .card {
-  background-color: #fdfdfd;
+  background: var(--bg-card);
+  backdrop-filter: blur(10px);
   padding: 1.5rem;
-  margin: 1.5rem auto;
-  border-radius: 10px;
-  width: 90%;
-  max-width: 800px;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
-  border-left: 5px solid #ccc;
-  transition: transform 0.2s ease;
+  margin-bottom: 1rem;
+  border-radius: 16px;
+  border: 1px solid var(--border-color);
+  border-left: 4px solid var(--neutral);
+  transition: all 0.3s ease;
+  animation: fadeInUp 0.5s ease-out;
 }
 
 .card:hover {
   transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
 }
 
-.title {
-  font-size: 1.1rem;
-  margin-bottom: 0.75rem;
-  color: #111;
-}
-
-.impact {
-  font-size: 0.95rem;
-  font-weight: bold;
-}
-
-.reason {
-  font-size: 0.95rem;
-  color: #444;
-  margin-top: 0.5rem;
-}
-
+/* Sentiment Colors */
 .positive {
-  border-left-color: #28a745;
+  border-left-color: var(--positive);
+}
+
+.positive .badge {
+  background: rgba(16, 185, 129, 0.2);
+  color: var(--positive);
 }
 
 .negative {
-  border-left-color: #dc3545;
+  border-left-color: var(--negative);
+}
+
+.negative .badge {
+  background: rgba(239, 68, 68, 0.2);
+  color: var(--negative);
 }
 
 .neutral {
-  border-left-color: #6c757d;
+  border-left-color: var(--neutral);
+}
+
+.neutral .badge {
+  background: rgba(107, 114, 128, 0.2);
+  color: var(--neutral);
+}
+
+/* Card Content */
+.title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+  line-height: 1.4;
+}
+
+.metaRow {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.badge {
+  padding: 0.35rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+/* Confidence Bar */
+.confidenceWrapper {
+  flex: 1;
+  min-width: 150px;
+}
+
+.confidenceLabel {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.35rem;
+}
+
+.confidenceBar {
+  height: 6px;
+  background: var(--bg-secondary);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.confidenceFill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+  border-radius: 3px;
+  transition: width 0.5s ease;
+}
+
+/* Reason */
+.reason {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  font-style: italic;
+  line-height: 1.5;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border-color);
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
